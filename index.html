@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>>HyperCube1000</title>
+</head>
+<style type="text/css">
+textarea {
+  overflow-y: scroll;
+  height: 200px;
+  width: 1212px;
+  resize: none;
+}
+</style>
+<pre class="output"></pre>
+<body style="overflow: hidden; position: fixed; background-color:rgba(16, 15, 15, 0.735);">
+  
+  <!--script type="text/javascript" src="./js/main.js"></script-->
+  
+  <!--div id="canvasDiv" style="cursor: none; padding: 0;margin: auto;display: block;width: 800px;"-->
+    <canvas id="canvasTop" width="400" height="400" style="border:2px solid #FF0000;">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <canvas id="canvasSide1" width="400" height="400" style="border:2px solid #00FF00;">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+  <!--/div-->
+    <canvas id="canvasSide2" width="400" height="400" style="border:2px solid #FFFF00;">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <textarea id="cords" style="color:#FFB000; background-color:rgb(16, 15, 15);" readonly></textarea>
+
+  <script>
+    const c = document.getElementById("canvasTop");
+    const ctx = c.getContext("2d");
+    const c1 = document.getElementById("canvasSide1");
+    const ctx1 = c1.getContext("2d");
+    const c2 = document.getElementById("canvasSide2");
+    const ctx2 = c2.getContext("2d");
+
+    c.addEventListener('click', doClick);
+    c1.addEventListener('click', doClick);
+    c2.addEventListener('click', doClick);
+    document.addEventListener('keydown', doKeyDown);  
+    document.addEventListener('mousemove', doMouseMove);
+
+    let  winSfx = new Audio("./sounds/win.wav");
+    let  loseSfx = new Audio("./sounds/lose.wav");
+    let  bankSfx = new Audio("./sounds/bank.wav");
+    let  themeMp3 = new Audio("./sounds/theme.mp3");
+
+    let chunk = [];
+    let pSize = 40;
+    let offset = 10;
+    let logStr = [];
+    let p;
+    let soundOn = true;
+
+    class Ego {
+      constructor() {
+        this.x = 5;
+        this.y = 5;
+        this.z = 5;
+        this.lvl = 1;
+        this.hp = 50;
+        this.att = 5;
+        this.def = 5;
+        this.trunk = 1;
+        this.bank = 0;
+        this.combo = 0;
+        this.prevNum = 0
+        this.maxCombo = 5;
+        this.left = 0;
+        this.bankNum = 0;
+        this.showControls = 100;
+        this.half = false;
+        //stats
+        this.lost = 0;
+        this.won = 0;
+        this.items = 0;
+      }
+    }
+
+    initGame()
+    //requestAnimationFrame(frame);
+
+
+    function initGame() {
+      if (window.innerWidth < 1236) {
+        alert("WARNING: Recommend using a browser width of at least 1240px. Current width: "+ window.innerWidth);
+      }
+      drawing = new Image();
+      drawing.src = "./images/z.png";
+      drawing.onload = function() {
+        draw();
+      };
+      p = new Ego();
+      let f = getRandInt(15);
+      for (i = 0; i < 10; i++) {
+        let x = [];
+        for (j = 0; j < 100; j++) {
+          if (getRandInt(f) == 0) {
+            // add bank 1 in 20
+            if (getRandInt(20) == 0) {
+              if (getRandInt(2) == 0) {
+                x.push("a");
+              } else {
+                x.push("b");
+                p.bankNum ++;
+              }
+            } else {
+              // 1-9
+              x.push(getRandInt(9)+1);
+              p.left ++;
+            }
+          } else {
+            x.push(".");
+          }
+        }
+        // add half cash loss
+        for (let i = 0; i < 3; i ++) {
+          x[getRandInt(1000)] = "c";
+        }
+        // at least 2 banks
+        if (p.bankNum < 3) {
+          for (let i = 0; i < 5; i ++) {
+            x[getRandInt(1000)] = "b";
+          }
+        }
+        chunk.push(x);
+      }
+      logStr = "\nSpace key for bank withdrawl" + logStr;
+      logStr = "\nConsecutive numbers build combo" + logStr;
+      logStr = "\nLarger numbers offer greater risk and reward" + logStr;
+      logStr = "\nClick or use AWSD & Arrow Keys to navigate HyperCube1000" + logStr;
+      draw();
+    }
+
+    function getRandInt(max) {
+      // max = 3 output: 0, 1 or 2
+      return Math.floor(Math.random() * max);
+    }
+
+    function frame(timestamp) {
+      //draw();
+      requestAnimationFrame(frame);
+    }         
+
+    function draw() {
+      document.getElementById("cords").innerHTML = "Z: " + p.z + ", X: " + p.x + ", Y: " + p.y
+       + ", audio(\"x\"):"+soundOn
+       + ", prevNum: " + p.prevNum
+       + ", Cash: $" + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0})
+       + ", Bank: $" + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) 
+       + logStr;
+      ctx.fillStyle = '#000000';
+      ctx.strokeStyle = "#00FF00";
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx1.fillStyle = '#000000';
+      ctx1.strokeStyle = "#00FF00";
+      ctx1.fillRect(0, 0, c1.width, c1.height);
+      ctx2.fillStyle = '#000000';
+      ctx2.strokeStyle = "#00FF00";
+      ctx2.fillRect(0, 0, c2.width, c2.height);
+      ctx.drawImage(drawing, 0 - (pSize * p.z / 2), 0 - (pSize * p.z / 2), 400 + pSize * p.z, 400 + pSize * p.z);
+      ctx1.drawImage(drawing, 0 - (pSize * p.y / 2), 0 - (pSize * p.y / 2), 400 + pSize * p.y, 400 + pSize * p.y);
+      ctx2.drawImage(drawing, 0 - (pSize * p.x / 2), 0 - (pSize * p.x / 2), 400 + pSize * p.x, 400 + pSize * p.x);
+
+      let y = 0;
+      for (x = 0; x < 100; x++) {
+        if (x % 10 == 0 && x != 0) {
+          y++;
+        }
+        // canvasTop
+        let ch = chunk[p.z][x];
+        if (ch == ".") {
+          ctx.fillStyle = "#000000";
+          ctx.strokeStyle = "#444444";
+        } else if (ch == "a") {
+          ctx.fillStyle = "#AA0000";
+          ctx.strokeStyle = "#00FF00";
+        } else if (ch == "b") {
+          ctx.fillStyle = "#00AA00";
+          ctx.strokeStyle = "#00FF00";
+        } else if (ch == "c") {
+          ctx.fillStyle = "#00AAAA";
+          ctx.strokeStyle = "#00FF00";
+        } else {
+          ctx.fillStyle = "rgb(" + (ch*20) + ", 00, 100)"; 
+          ctx.strokeStyle = "#00FF00";
+        }
+        if (ch != ".") {
+          ctx.fillRect((x%10)*pSize, y*pSize, pSize, pSize);
+        
+          ctx.font = "40px Arial";
+          ctx.lineWidth = 2;
+          ctx.fillStyle = "#000000";
+          ctx.fillText(ch, (x%10) * pSize + offset, y * pSize + pSize - (offset/2));
+          ctx.strokeText(ch, (x%10) * pSize + offset, y * pSize + pSize - (offset/2));
+        }
+        if (x == (p.y*10)+p.x) {
+          ctx.strokeStyle = "#00FF00"; 
+          ctx.strokeRect(0, p.y*pSize, c.width, pSize);
+
+          ctx.strokeStyle = "#FFFF00"; 
+          ctx.strokeRect(p.x*pSize, 0, pSize, c.height);
+
+          ctx.strokeStyle = "#00FF00"; 
+          ctx.strokeRect((x%10)*pSize, y*pSize, pSize, pSize);
+        }
+        // canvasSide1
+        ch = chunk[y][(p.y*10)+(x%10)]
+        if (ch == ".") {
+          ctx1.fillStyle = "#000000";
+          ctx1.strokeStyle = "#444444";
+        } else if (ch == "a") {
+          ctx1.fillStyle = "#AA0000";
+          ctx1.strokeStyle = "#00FF00";
+        } else if (ch == "b") {
+          ctx1.fillStyle = "#00AA00";
+          ctx1.strokeStyle = "#00FF00";
+        } else if (ch == "c") {
+          ctx1.fillStyle = "#00AAAA";
+          ctx1.strokeStyle = "#00FF00";
+        } else {
+          ctx1.fillStyle = "rgb(" + (ch*20) + ", 00, 100)";
+          ctx1.strokeStyle = "#00FF00";
+        }
+        if (ch != ".") {
+          ctx1.fillRect((x%10)*pSize, y*pSize, pSize-1, pSize-1);
+        }
+        ctx1.font = "40px Arial";
+        ctx1.lineWidth = 2;
+        ctx1.strokeText(ch, (x%10) * pSize + offset, y * pSize + pSize - (offset/2));
+        if (x == (p.z*10)+p.x) {
+          ctx1.strokeStyle = "#FF0000"; 
+          ctx1.strokeRect(0, p.z*pSize, c.width, pSize);
+
+          ctx1.strokeStyle = "#FFFF00"; 
+          ctx1.strokeRect(p.x*pSize, 0, pSize, c.height);
+
+          ctx1.strokeStyle = "#00FF00"; 
+          ctx1.strokeRect((x%10)*pSize, y*pSize, pSize, pSize);
+        }
+        // canvasSide2
+        ch = chunk[y][(x%10)*10+p.x];
+        if (ch == ".") {
+          ctx2.fillStyle = "#000000";
+          ctx2.strokeStyle = "#444444";
+        } else if (ch == "a") {
+          ctx2.fillStyle = "#AA0000";
+          ctx2.strokeStyle = "#00FF00";
+        } else if (ch == "b") {
+          ctx2.fillStyle = "#00AA00";
+          ctx2.strokeStyle = "#00FF00";
+        } else if (ch == "c") {
+          ctx2.fillStyle = "#00AAAA";
+          ctx2.strokeStyle = "#00FF00";
+        } else {
+          ctx2.fillStyle = "rgb(" + (ch*20) + ", 00, 100)";
+          ctx2.strokeStyle = "#00FF00";
+        }
+        if (ch != ".") {
+          ctx2.fillRect((x%10)*pSize, y*pSize, pSize-1, pSize-1);
+        }
+        ctx2.font = "40px Arial";
+        ctx2.lineWidth = 2;
+        ctx2.strokeText(ch, (x%10) * pSize + offset, y * pSize + pSize - (offset/2));
+        if (x == (p.z*10)+p.y) {
+          ctx2.strokeStyle = "#FF0000"; 
+          ctx2.strokeRect(0, p.z*pSize, c2.width, pSize);
+
+          ctx2.strokeStyle = "#00FF00"; 
+          ctx2.strokeRect(p.y*pSize, 0, pSize, c2.height);
+
+          ctx2.strokeStyle = "#00FF00"; 
+          ctx2.strokeRect((x%10)*pSize, y*pSize, pSize, pSize);
+        }
+      }
+      if (p.showControls > 0) {
+        ctx.strokeStyle = "#AAAAAA";
+        ctx.strokeText("a", p.x * pSize - pSize + offset, p.y * pSize + pSize - offset);
+        ctx.strokeText("d", p.x * pSize + pSize + offset, p.y * pSize + pSize - offset);
+        ctx.strokeText("w", p.x * pSize + offset, p.y * pSize - offset);
+        ctx.strokeText("s", p.x * pSize + offset, p.y * pSize + (pSize * 2) - offset);
+        ctx1.strokeStyle = "#AAAAAA";
+        ctx1.strokeText("a", p.x * pSize - pSize + offset, p.z * pSize + pSize - offset);
+        ctx1.strokeText("d", p.x * pSize + pSize + offset, p.z * pSize + pSize - offset);
+        ctx1.strokeText("^", p.x * pSize + offset, p.z * pSize - offset);
+        ctx1.strokeText("V", p.x * pSize + offset, p.z * pSize + (pSize * 2) - offset);
+        ctx2.strokeStyle = "#AAAAAA";
+        ctx2.strokeText("<", p.y * pSize - pSize + offset, p.z * pSize + pSize - offset);
+        ctx2.strokeText(">", p.y * pSize + pSize + offset, p.z * pSize + pSize - offset);
+        ctx2.strokeText("^", p.y * pSize + offset, p.z * pSize - offset);
+        ctx2.strokeText("V", p.y * pSize + offset, p.z * pSize + (pSize * 2) - offset);
+        p.showControls --;
+      }
+    }
+
+    function doClick(e) {
+      doSound(themeMp3);
+      // console.log(e.srcElement.id);
+      let x = Math.floor((e.x - e.srcElement.offsetLeft) / pSize);
+      let y = Math.floor((e.y - e.srcElement.offsetTop) / pSize);
+      // console.log(x + ", " + y);
+      if (e.srcElement.id == "canvasTop") {
+        p.x = x;
+        p.y = y;
+        //ctx.strokeStyle = "#FFFFFF";
+        //ctx.strokeRect(x*pSize, y*pSize, pSize, pSize);
+      } else if (e.srcElement.id == "canvasSide1") {
+        p.x = x;
+        p.z = y;
+      } else if (e.srcElement.id == "canvasSide2") {
+        p.y = x;
+        p.z = y;
+      }
+      if (p.showControls > 0) {
+        p.showControls = 0;
+        logStr = "\nPress \"c\" to show controls"  + logStr;
+      }
+      doLogic(e);
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.strokeRect(e.x, e.y, 4, 4);
+      ctx1.strokeStyle = "#FFFFFF";
+      ctx1.strokeRect(e.x, e.y, 4, 4);
+      ctx2.strokeStyle = "#FFFFFF";
+      ctx2.strokeRect(e.x, e.y, 4, 4);
+    }
+
+    function doKeyDown(e) {
+      doSound(themeMp3);
+      if (e.key == "x") {
+        if (soundOn) {
+          themeMp3.pause();
+          winSfx.pause();
+          loseSfx.pause();
+          bankSfx.pause();
+          soundOn = false;
+        } else {
+          soundOn = true;
+        }
+      }
+      if (e.key == "c") {
+        if (p.showControls > 0) {
+          p.showControls = 0
+        } else {
+          p.showControls = 900000;
+        }
+      }
+      if (e.key == "w" || e.key == "ArrowLeft") {
+        p.y --;
+        if (p.y < 0) {
+          p.y = 0;
+        }
+      }
+      if (e.key == "s" || e.key == "ArrowRight") {
+        p.y ++;
+        if (p.y > 9) {
+          p.y = 9;
+        }
+      }
+      if (e.key == "a") {
+        p.x --;
+        if (p.x < 0) {
+          p.x = 0;
+        }
+      }
+      if (e.key == "d") {
+        p.x ++;
+        if (p.x > 9) {
+          p.x = 9;
+        }
+      }
+      // up
+      if (e.key == "ArrowDown") {
+        p.z ++;
+        if (p.z > 9) {
+          p.z = 9;
+        }
+      }
+      // down
+      if (e.key == "ArrowUp") {
+        p.z --;
+        if (p.z < 0) {
+          p.z = 0;
+        }
+      }
+      doLogic(e);
+    }
+
+    function doLogic(e) {
+      ch = chunk[p.z][(p.y*10)+p.x];
+      let t = 0;
+      if (ch == "c") {
+        // Keep half on loss
+        p.half = true;
+        p.item += 1;
+        logStr = "\nKeep 1/2 cash on next failure" + logStr;
+        chunk[p.z][(p.y*10)+p.x] = ".";
+        doSound(loseSfx); // change me
+      } else if (ch == "a") {
+        // Money bonus
+        let a = getRandInt(1000000);
+        p.trunk += a;
+        p.item += 1;
+        logStr = "\nFree Money: " + a + logStr;
+        chunk[p.z][(p.y*10)+p.x] = ".";
+        doSound(bankSfx); // change me
+      } else if (ch == "b") {
+        // Bank
+        if (p.trunk > 1) {
+          logStr = "\nBanked: " + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          p.bank += p.trunk - 1;
+          p.trunk = 1;
+        } else {
+          logStr = "\nWithdraw: " + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          p.trunk += p.bank ;
+          p.bank = 0;
+        }
+        doSound(bankSfx);
+      } else if (ch > 0 && ch < 10) {
+        // Encounter
+        r = getRandInt(10); // 0-9
+        if (r + p.combo < ch) {
+          p.lost += p.trunk-1;
+          if (p.half && p.trunk > 1) {
+            logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Lost (1/2): " + (p.trunk/2).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+            p.trunk = p.trunk / 2;
+            p.half = false;
+          } else {
+            logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Lost: " + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+            p.trunk = 1;
+          }
+          p.combo = 0;
+          t = 1; // dont remove immediatly
+          doSound(loseSfx);
+        } else {
+          if (r + p.combo == ch) {
+            p.trunk += p.trunk;
+            logStr = "\nRolled minimum to win (" + ch + ") - Doubled trunk: " + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          }
+          p.won += p.trunk * ch;
+          logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Won: " + (p.trunk*ch).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          p.trunk += p.trunk * ch;
+          t = 2; // remove
+          doSound(winSfx);
+          // c-c-combo if prevNum is higher or lower
+          if (p.prevNum + 1 == ch || p.prevNum - 1 == ch) {
+            if (p.combo < p.maxCombo) {
+              p.combo ++; 
+            }
+          } else {
+            p.combo = 0;
+          }
+          p.prevNum = ch;
+        }
+      }
+      draw();
+      let o = 10
+      if (t == 1) {
+        ctx.fillStyle = "#FF0000";
+        ctx.fillRect(p.x*pSize+o, p.y*pSize+o, pSize-(o*2), pSize-(o*2));
+        ctx1.fillStyle = "#FF0000";
+        ctx1.fillRect(p.x*pSize+o, p.z*pSize+o, pSize-(o*2), pSize-(o*2));
+        ctx2.fillStyle = "#FF0000";
+        ctx2.fillRect(p.y*pSize+o, p.z*pSize+o, pSize-(o*2), pSize-(o*2));
+      } else if (t == 2) {
+        ctx.fillStyle = "#00FF00";
+        ctx.fillRect(p.x*pSize+o, p.y*pSize+o, pSize-(o*2), pSize-(o*2));
+        ctx1.fillStyle = "#00FF00";
+        ctx1.fillRect(p.x*pSize+o, p.z*pSize+o, pSize-(o*2), pSize-(o*2));
+        ctx2.fillStyle = "#00FF00";
+        ctx2.fillRect(p.y*pSize+o, p.z*pSize+o, pSize-(o*2), pSize-(o*2));
+        chunk[p.z][(p.y*10)+p.x] = ".";
+        p.left--;
+      } else if (t == 3) {
+        chunk[p.z][(p.y*10)+p.x] = ".";
+        p.left--;
+      }
+      if (p.left == 0) {
+        logStr = "\nHyperCube Exausted. Game Over\n" + logStr;
+        p = 0;
+      }
+    }
+
+    function doMouseMove(e) {
+      mx = e.x;
+      my = e.y;
+    }
+
+    function drawLine(l) {
+      ctx.beginPath();
+      ctx.moveTo(l[0], l[1]);
+      for (let i = 2; i < l.length; i += 2) {
+        ctx.lineTo(l[i], l[i+1]);
+      }
+      ctx.stroke();
+    }
+
+    function doSound(a) {
+      if (soundOn) {
+        a.play();
+      }
+    }
+
+  </script>
+</body>
+</html>
