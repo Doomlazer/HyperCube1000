@@ -1,6 +1,6 @@
 # HyperCube1000
 
-Prototype game test 
+Prototype game test
 
 # Play in browser
 
@@ -17,6 +17,12 @@ encounter the player automatically rolls a random number between 0-9. If the rol
 or greater than the number marked on the room the player doubles thier on-hand cash. Otherwise,
 the player loses all but $1.
 
-Besides the 1-9 encounters there are also "bank" tiles which toggle moving money between the
+Besides the 1-9 encounters there are also "b" tiles which toggle moving money between the
 bank and the player's on-hand cash. Tiles marked "a" give a random amount of free cash (0-999,999).
 Tiles marked "c" will let the player keep half their on-hand cash on the next loss.
+
+Choosing consecutive encounters (higher or lower) will raise the Combo Bonus up to the Max Combo.
+The combo is reset if the encounter is failed.
+ 
+Press "c" key to toggle showing the controls.
+Press "x" key to toggle audio on/off.
