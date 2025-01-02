@@ -2,7 +2,7 @@
 
 Prototype game test based around using three 2d canvases to navigte a cubic gameplay area. Requires a browser window width of at least 1240px to format propperly.
 
-<img src="pics/preview.png" alt="A screenshot of the game" width="600"></img>
+<img src="images/preview.png" alt="A screenshot of the game" width="600"></img>
 
 # Play in browser
 
