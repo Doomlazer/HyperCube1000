@@ -43,6 +43,10 @@ textarea {
     document.addEventListener('keydown', doKeyDown);  
     document.addEventListener('mousemove', doMouseMove);
 
+    // Safari slow audio playback fix
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
     let  winSfx = new Audio("./sounds/win.wav");
     let  loseSfx = new Audio("./sounds/lose.wav");
     let  bankSfx = new Audio("./sounds/bank.wav");
