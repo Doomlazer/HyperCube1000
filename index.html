@@ -298,9 +298,12 @@ textarea {
 
     function doClick(e) {
       doSound(themeMp3);
-      // console.log(e.srcElement.id);
-      let x = Math.floor((e.x - e.srcElement.offsetLeft) / pSize);
-      let y = Math.floor((e.y - e.srcElement.offsetTop) / pSize);
+      // the srcElement I'm using doen't give the correct canvas offset, 
+      // so fake it with offx for now
+      let offx = -10; 
+      let offy = -10;
+      let x = Math.floor((e.x - e.srcElement.offsetLeft + offx) / pSize);
+      let y = Math.floor((e.y - e.srcElement.offsetTop + offy) / pSize);
       // console.log(x + ", " + y);
       if (e.srcElement.id == "canvasTop") {
         p.x = x;
@@ -320,11 +323,11 @@ textarea {
       }
       doLogic(e);
       ctx.strokeStyle = "#FFFFFF";
-      ctx.strokeRect(e.x, e.y, 4, 4);
+      ctx.strokeRect(e.x - e.srcElement.offsetLeft + offx, e.y - e.srcElement.offsetTop + offy, 4, 4);
       ctx1.strokeStyle = "#FFFFFF";
-      ctx1.strokeRect(e.x, e.y, 4, 4);
+      ctx1.strokeRect(x*pSize, y.z*pSize, 4, 4);
       ctx2.strokeStyle = "#FFFFFF";
-      ctx2.strokeRect(e.x, e.y, 4, 4);
+      ctx2.strokeRect(y*pSize, p.y*pSize, 4, 4);
     }
 
     function doKeyDown(e) {
