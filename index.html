@@ -120,10 +120,9 @@
           x[getRandInt(1000)] = "c";
         }
         // add mouseOn
-        if (!mouseAlwaysOn) {
-          for (let i = 0; i < 3; i ++) {
-            x[getRandInt(1000)] = "d";
-          }
+        let d = getRandInt(15);
+        for (let i = 0; i < d; i ++) {
+          x[getRandInt(1000)] = "d";
         }
         // at least 2 banks
         if (p.bankNum < 3) {
@@ -426,10 +425,17 @@
         chunk[p.z][(p.y*10)+p.x] = ".";
         doSound(loseSfx); // change me
       } else if (ch == "d") {
-        // Enable Mouse
-        mouseOn += getRandInt(100) + 1;
+        if (mouseAlwaysOn) {
+          let a = getRandInt(1000);
+          p.trunk += a;
+          p.item += 1;
+          logStr = "\nSmall bonus: " + a + logStr;
+        } else {
+          // Temp Enable Mouse
+          mouseOn += getRandInt(100) + 1;
+          logStr = "\nMouse enabled for the next " + (mouseOn-1) + " moves" + logStr;
+        }
         p.item += 1;
-        logStr = "\nMouse enabled for the next " + (mouseOn-1) + " moves" + logStr;
         chunk[p.z][(p.y*10)+p.x] = ".";
         doSound(bankSfx); // change me
       } else if (ch == "a") {
