@@ -1,5 +1,4 @@
 
-
 HyperCube1000 Help file English 2025.1.4 (Scroll to read)
 
 Press 0 key to generate a new HyperCube1000 (deletes current game).

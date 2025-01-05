@@ -1,5 +1,4 @@
 
-
 Archivo de Ayuda HyperCube1000 Español 2025.1.4 (Desplácese para leer)
 
 Presione la tecla 0 para generar un nuevo HyperCube1000 (borra el juego actual).
