@@ -4,11 +4,9 @@
   <title>>HyperCube1000</title>
 </head>
 <pre class="output"></pre>
-<body style="overflow: hidden; position: fixed; background-color:rgba(16, 15, 15, 0.735);">
+<body style="overflow: hidden; position: fixed; background-image: url('./images/z.png');"><!--background-color:rgba(16, 15, 15, 0.735);"-->
   
   <!--script type="text/javascript" src="./js/main.js"></script-->
-  
-  <!--div id="canvasDiv" style="cursor: none; padding: 0;margin: auto;display: block;width: 800px;"-->
     <canvas id="canvasTop" width="400" height="400" style="border:2px solid #FF0000;">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
@@ -67,37 +65,37 @@
       " | previous: " : " | précédente : ",
       " | Cash: $" : " | Espèces : $",
       " | Bank: $" : " | Banque : $",
-      "\nPress \"c\" to show controls" : "\nPress \"c\" to show controls",
-      "\nMouse click disabled. Find d tiles" : "\nMouse click disabled. Find d tiles",
-      "\nConsecutive numbers build combo" : "\nConsecutive numbers build combo",
-      "\nLarger numbers offer greater risk and reward" : "\nLarger numbers offer greater risk and reward",
-      "\nTouch to navigate HyperCube1000" : "\nTouch to navigate HyperCube1000",
-      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)",
-      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguring Key Bindings - press keys to set new controls",
-      "\nsoundOn = false" : "\nsoundOn = false",
-      "\nsoundOn = true" : "\nsoundOn = true",
-      "\nshowControls = false" : "\nshowControls = false",
-      "\nshowControls = true" : "\nshowControls = true",
-      "\nmouseAlwaysOn = false" : "\nmouseAlwaysOn = false",
-      "\nmouseAlwaysOn = true" : "\nmouseAlwaysOn = true",
-      "\nMouse enabled for the next " : "\nMouse enabled for the next ",
-      "\nMouse disabled" : "\nMouse disabled",
-      "\nMouse enabled turns remaining: " : "\nMouse enabled turns remaining: ",
+      "\nPress 3 to show controls" : "\nPresse 3 to show controls",
+      "\nMouse click disabled. Find d tiles" : "\nLe clic de la souris est désactivé. Trouver les carreaux « d",
+      "\nConsecutive numbers build combo" : "\nLes nombres consécutifs forment un combo",
+      "\nLarger numbers offer greater risk and reward" : "\nLes grands nombres offrent plus de risques et de récompenses",
+      "\nTouch to navigate HyperCube1000" : "\nTouchez pour naviguer dans HyperCube1000",
+      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUtiliser les touches AWSD et les touches fléchées pour naviguer dans HyperCube1000 (9 pour rebondir).",
+      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguration des combinaisons de touches - appuyer sur les touches pour définir de nouvelles commandes",
+      "\nsoundOn = false" : "\nson activé = false",
+      "\nsoundOn = true" : "\nson activé = true",
+      "\nshowControls = false" : "\nAfficher les contrôles = false",
+      "\nshowControls = true" : "\nAfficher les contrôles = true",
+      "\nmouseAlwaysOn = false" : "\nSouris toujours activée = false",
+      "\nmouseAlwaysOn = true" : "\nSouris toujours activée = true",
+      "\nMouse enabled for the next " : "\nSouris activée pour les ",
+      "\nMouse disabled" : "\nSouris désactivée",
+      "\nMouse enabled turns remaining: " : "\nTours activés par la souris restants : ",
       "\nKeep 1/2 cash on next failure" : "\nKeep 1/2 cash on next failure",
-      "\nSmall bonus: " : "\nSmall bonus: ",
-      " moves" : " moves",
-      "\nFree Money: " : "\nFree Money: ",
-      "\nBanked: $" : "\nBanked: $",
-      "\nWithdraw: $" : "\nWithdraw: $",
-      "\nRolled: " : "\nRolled: ",
+      "\nSmall bonus: " : "\nPetit bonus : ",
+      " moves" : " prochains mouvements",
+      "\nFree Money: " : "\nL'argent gratuit : ",
+      "\nBanked: $" : "\nBanque : $",
+      "\nWithdraw: $" : "\nRetirer : $",
+      "\nRolled: " : "\nRoulés : ",
       " (+combo " : " (+combo ",
-      "), Needed: " : "), Needed: ",
-      ", Lost (1/2): " : ", Lost (1/2): ",
-      ", Lost: " : ", Lost: ",
-      "\nRolled minimum to win (" : "\nRolled minimum to win (",
-      ") - Doubled trunk: " : ") - Doubled trunk: ",
-      ", Won: " : ", Won: ",
-      "\nHyperCube Exausted. Game Over\n" : "\nHyperCube Exausted. Game Over\n"
+      "), Needed: " : "), Nécessaire : ",
+      ", Lost (1/2): " : ", Perdu (1/2): ",
+      ", Lost: " : ", Perdu t: ",
+      "\nRolled minimum to win (" : "\nLe minimum pour gagner (",
+      ") - Doubled trunk: " : ") - Tronc doublé : ",
+      ", Won: " : ", Gagné : ",
+      "\nHyperCube Exhausted. Game Over\n" : "\nHyperCube Exausted. Game Over\n"
     }
 
     let dicSP = {
@@ -107,37 +105,37 @@
       " | previous: " : " | anterior: ",
       " | Cash: $" : " | Efectivo: $",
       " | Bank: $" : " | Banco: $",
-      "\nPress \"c\" to show controls" : "\nPulsa \"c\" para mostrar los controles",
-      "\nMouse click disabled. Find d tiles" : "\nMouse click disabled. Find d tiles",
-      "\nConsecutive numbers build combo" : "\nConsecutive numbers build combo",
-      "\nLarger numbers offer greater risk and reward" : "\nLarger numbers offer greater risk and reward",
-      "\nTouch to navigate HyperCube1000" : "\nTouch to navigate HyperCube1000",
-      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)",
-      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguring Key Bindings - press keys to set new controls",
-      "\nsoundOn = false" : "\nsoundOn = false",
-      "\nsoundOn = true" : "\nsoundOn = true",
-      "\nshowControls = false" : "\nshowControls = false",
-      "\nshowControls = true" : "\nshowControls = true",
-      "\nmouseAlwaysOn = false" : "\nmouseAlwaysOn = false",
-      "\nmouseAlwaysOn = true" : "\nmouseAlwaysOn = true",
-      "\nMouse enabled for the next " : "\nMouse enabled for the next ",
-      "\nMouse disabled" : "\nMouse disabled",
-      "\nMouse enabled turns remaining: " : "\nMouse enabled turns remaining: ",
-      "\nKeep 1/2 cash on next failure" : "\nKeep 1/2 cash on next failure",
-      "\nSmall bonus: " : "\nSmall bonus: ",
-      " moves" : " moves",
-      "\nFree Money: " : "\nFree Money: ",
-      "\nBanked: $" : "\nBanked: $",
-      "\nWithdraw: $" : "\nWithdraw: $",
-      "\nRolled: " : "\nRolled: ",
+      "\nPress 3 to show controls" : "\nPulsa 3 para mostrar los controles",
+      "\nMouse click disabled. Find d tiles" : "\nClic del ratón desactivado. Buscar azulejos d",
+      "\nConsecutive numbers build combo" : "\nNúmeros consecutivos construyen combo",
+      "\nLarger numbers offer greater risk and reward" : "\nA mayor número, mayor riesgo y mayor recompensa",
+      "\nTouch to navigate HyperCube1000" : "\nToca para navegar por HyperCube1000",
+      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUtilice AWSD y las teclas de flecha para navegar por HyperCube1000 (9 para volver a enlazar)",
+      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguración de las combinaciones de teclas: pulse las teclas para establecer nuevos controles.",
+      "\nsoundOn = false" : "\nSonido activado = false",
+      "\nsoundOn = true" : "\nSonido activado = true",
+      "\nshowControls = false" : "\nMostrar controles = false",
+      "\nshowControls = true" : "\nMostrar controles = true",
+      "\nmouseAlwaysOn = false" : "\nRatón siempre encendido = false",
+      "\nmouseAlwaysOn = true" : "\nRatón siempre encendido = true",
+      "\nMouse enabled for the next " : "\nRatón activado para el próximo ",
+      "\nMouse disabled" : "\nDesactivar ratón",
+      "\nMouse enabled turns remaining: " : "\nQuedan turnos habilitados para el ratón: ",
+      "\nKeep 1/2 cash on next failure" : "\nMantenga 1/2 efectivo en el próximo fracaso",
+      "\nSmall bonus: " : "\nPequeña bonificación: ",
+      " moves" : " movimientos",
+      "\nFree Money: " : "\nDinero gratis: ",
+      "\nBanked: $" : "\nBanca: $",
+      "\nWithdraw: $" : "\nRetirar: $",
+      "\nRolled: " : "\nEnrollado: ",
       " (+combo " : " (+combo ",
-      "), Needed: " : "), Needed: ",
-      ", Lost (1/2): " : ", Lost (1/2): ",
-      ", Lost: " : ", Lost: ",
-      "\nRolled minimum to win (" : "\nRolled minimum to win (",
-      ") - Doubled trunk: " : ") - Doubled trunk: ",
+      "), Needed: " : "), Necesario: ",
+      ", Lost (1/2): " : ", Perdido (1/2): ",
+      ", Lost: " : ", Perdido: ",
+      "\nRolled minimum to win (" : "\nTirada mínima para ganar (",
+      ") - Doubled trunk: " : ") - Doble tronco: ",
       ", Won: " : ", Won: ",
-      "\nHyperCube Exausted. Game Over\n" : "\nHyperCube Exausted. Game Over\n"
+      "\nHyperCube Exhausted. Game Over\n" : "\nHyperCube Agotado. Game Over\n"
     }
 
     let t1 = [" "," "," "," "," "," "," "," "," "," ",
@@ -552,28 +550,26 @@
     }
 
     function doClick(e) {
-      logStr = "";
-      logStr = langStr("\nConsecutive numbers build combo") + logStr;
-      logStr = langStr("\nLarger numbers offer greater risk and reward") + logStr;
-      if (is_touch_enabled()) {
-        logStr = langStr("\nTouch to navigate HyperCube1000") + logStr;
-      } else {
-        logStr = langStr("\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)") + logStr;
-      }
       if (title) {
         if (e.srcElement.id == "canvasTop") {
           title = false;
           lang = "EN"
-          draw();
         } else if (e.srcElement.id == "canvasSide1") {
           title = false;
           lang = "FR"
-          draw();
         } else if (e.srcElement.id == "canvasSide2") {
           title = false;
           lang = "SP"
-          draw();
         }
+        logStr = "";
+        logStr = langStr("\nConsecutive numbers build combo") + logStr;
+        logStr = langStr("\nLarger numbers offer greater risk and reward") + logStr;
+        if (is_touch_enabled()) {
+          logStr = langStr("\nTouch to navigate HyperCube1000") + logStr;
+        } else {
+          logStr = langStr("\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)") + logStr;
+        }
+        draw();
         return;
       }
       if (key.defining > 0) {return;}
@@ -600,7 +596,7 @@
         }
         if (p.showControls) {
           p.showControls = false;
-          logStr = langStr("\nPress \"c\" to show controls") + logStr;
+          logStr = langStr("\nPress 3 to show controls") + logStr;
         }
         doLogic(e);
       } else {
@@ -707,6 +703,8 @@
           soundOn = true;
           logStr = langStr("\nsoundOn = true") + logStr;
         }
+        draw();
+        return;
       }
       if (k == "3") {
         if (p.showControls) {
@@ -716,6 +714,8 @@
           p.showControls = true;
           logStr = langStr("\nshowControls = true") + logStr;
         }
+        draw();
+        return;
       }
       if (k == key.lt || k == key.rl) {
         p.y --;
@@ -761,6 +761,8 @@
           mouseAlwaysOn = true;
           logStr = langStr("\nmouseAlwaysOn = true") + logStr;
         }
+        draw();
+        return;
       }
       doLogic(e);
     }
@@ -881,7 +883,7 @@
         p.left--;
       }
       if (p.left == 0) {
-        logStr = langStr("\nHyperCube Exausted. Game Over\n") + logStr;
+        logStr = langStr("\nHyperCube Exhausted. Game Over\n") + logStr;
         //p = 0;
       }
     }
@@ -902,6 +904,7 @@
       canvasWidth = w;
       pSize = w / 10;
       document.getElementById("cords").style.width = (getWidth() - 30) + "px";
+      document.getElementById("cords").style.height= (getHeight() - w - 50) + "px";
       ctx.font = scaleFontSize(baseFontSize);
       ctx1.font = scaleFontSize(baseFontSize);
       ctx2.font = scaleFontSize(baseFontSize);
@@ -922,6 +925,18 @@
       }
       if (document.body) {
         return document.body.clientWidth;
+      }
+    }
+
+    function getHeight() {
+      if (self.innerHeight) {
+        return self.innerHeight;
+      }
+      if (document.documentElement && document.documentElement.clientHeight) {
+        return document.documentElement.clientHeight;
+      }
+      if (document.body) {
+        return document.body.clientHeight;
       }
     }
 
