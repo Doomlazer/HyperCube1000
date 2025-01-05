@@ -4,7 +4,7 @@
   <title>>HyperCube1000</title>
 </head>
 <pre class="output"></pre>
-<body style="overflow: hidden; position: fixed; background-image: url('./images/z.png');"><!--background-color:rgba(16, 15, 15, 0.735);"-->
+<body style="overflow: hidden; position: fixed; background-image: url('./images/b0.png');"><!--background-color:rgba(16, 15, 15, 0.735);"-->
   
   <!--script type="text/javascript" src="./js/main.js"></script-->
     <canvas id="canvasTop" width="400" height="400" style="border:2px solid #FF0000;">
@@ -187,7 +187,7 @@
         this.bank = 0;
         this.combo = 0;
         this.prevNum = 0
-        this.maxCombo = 5;
+        this.maxCombo = 4;
         this.left = 0;
         this.bankNum = 0;
         this.showControls = true;
@@ -274,25 +274,29 @@
             x.push(".");
           }
         }
-        // add half cash loss
-        for (let i = 0; i < 3; i ++) {
-          x[getRandInt(1000)] = "c";
-        }
-        // add mouseOn
-        let d = getRandInt(15);
-        for (let i = 0; i < d; i ++) {
-          x[getRandInt(1000)] = "d";
-        }
-        // at least 2 banks
-        if (p.bankNum < 3) {
-          for (let i = 0; i < 5; i ++) {
-            x[getRandInt(1000)] = "b";
-          }
-        }
         chunk.push(x);
       }
+      // add half cash loss
+      for (let i = 0; i < 3; i ++) {
+        chunk[getRandInt(10)][getRandInt(100)] = "c";
+      }
+      // add mouseOn
+      let d = Math.abs(getRandInt(16) - f);
+      d = (d < 2) ? 2 : d;
+      for (let i = 0; i < d; i ++) {
+        chunk[getRandInt(10)][getRandInt(100)] = "d";
+      }
+      // at least 2 banks
+      if (p.bankNum < 3) {
+        for (let i = 0; i < 5; i ++) {
+          chunk[getRandInt(10)][getRandInt(100)] = "b";
+        }
+      }
+      // +1 to max combo
+      chunk[getRandInt(10)][getRandInt(100)] = "e";
+      // background
       drawing = new Image();
-      drawing.src = "./images/z.png";
+      drawing.src = "./images/b0.png";
       drawing.onload = function() {
         doResize();
       };
@@ -376,7 +380,21 @@
         logStr;
       }
 
-      let y = 0;
+      let y = 0,
+      // tile colors
+      zc1 = "#000000", // "."
+      zc2 = "#444444",
+      ac1 = "#AA0000",
+      ac2 = "#00FF00",
+      bc1 = "#00AA00",
+      bc2 = "#00FF00",
+      cc1 = "#00AAAA",
+      cc2 = "#00FF00",
+      dc1 = "#FF0088",
+      dc2 = "#00FFFF",
+      ec1 = "#FFFF00",
+      ec2 = "#0000FF"
+      ;
       for (x = 0; x < 100; x++) {
         if (x % 10 == 0 && x != 0) {
           y++;
@@ -384,17 +402,23 @@
         // canvasTop
         let ch = chunk[p.z][x];
         if (ch == ".") {
-          ctx.fillStyle = "#000000";
-          ctx.strokeStyle = "#444444";
+          ctx.fillStyle = zc1;
+          ctx.strokeStyle = zc2;
         } else if (ch == "a") {
-          ctx.fillStyle = "#AA0000";
-          ctx.strokeStyle = "#00FF00";
+          ctx.fillStyle = ac1;
+          ctx.strokeStyle = ac2;
         } else if (ch == "b") {
-          ctx.fillStyle = "#00AA00";
-          ctx.strokeStyle = "#00FF00";
+          ctx.fillStyle = bc1;
+          ctx.strokeStyle = bc2;
         } else if (ch == "c") {
-          ctx.fillStyle = "#00AAAA";
-          ctx.strokeStyle = "#00FF00";
+          ctx.fillStyle = cc1;
+          ctx.strokeStyle = cc2;
+        } else if (ch == "d") {
+          ctx.fillStyle = dc1;
+          ctx.strokeStyle = dc2;
+        } else if (ch == "e") {
+          ctx.fillStyle = ec1;
+          ctx.strokeStyle = ec2;
         } else {
           ctx.fillStyle = "rgb(" + (ch*20) + ", 00, 100)"; 
           ctx.strokeStyle = "#00FF00";
@@ -419,17 +443,23 @@
         // canvasSide1
         ch = chunk[y][(p.y*10)+(x%10)]
         if (ch == ".") {
-          ctx1.fillStyle = "#000000";
-          ctx1.strokeStyle = "#444444";
+          ctx1.fillStyle = zc1;
+          ctx1.strokeStyle = zc2;
         } else if (ch == "a") {
-          ctx1.fillStyle = "#AA0000";
-          ctx1.strokeStyle = "#00FF00";
+          ctx1.fillStyle = ac1;
+          ctx1.strokeStyle = ac2;
         } else if (ch == "b") {
-          ctx1.fillStyle = "#00AA00";
-          ctx1.strokeStyle = "#00FF00";
+          ctx1.fillStyle = bc1;
+          ctx1.strokeStyle = bc2;
         } else if (ch == "c") {
-          ctx1.fillStyle = "#00AAAA";
-          ctx1.strokeStyle = "#00FF00";
+          ctx1.fillStyle = cc1;
+          ctx1.strokeStyle = cc2;
+        } else if (ch == "d") {
+          ctx1.fillStyle = dc1;
+          ctx1.strokeStyle = dc2;
+        } else if (ch == "e") {
+          ctx1.fillStyle = ec1;
+          ctx1.strokeStyle = ec2;
         } else {
           ctx1.fillStyle = "rgb(" + (ch*20) + ", 00, 100)";
           ctx1.strokeStyle = "#00FF00";
@@ -452,17 +482,23 @@
         // canvasSide2
         ch = chunk[y][(x%10)*10+p.x];
         if (ch == ".") {
-          ctx2.fillStyle = "#000000";
-          ctx2.strokeStyle = "#444444";
+          ctx2.fillStyle = zc1;
+          ctx2.strokeStyle = zc2;
         } else if (ch == "a") {
-          ctx2.fillStyle = "#AA0000";
-          ctx2.strokeStyle = "#00FF00";
+          ctx2.fillStyle = ac1;
+          ctx2.strokeStyle = ac2;
         } else if (ch == "b") {
-          ctx2.fillStyle = "#00AA00";
-          ctx2.strokeStyle = "#00FF00";
+          ctx2.fillStyle = bc1;
+          ctx2.strokeStyle = bc2;
         } else if (ch == "c") {
-          ctx2.fillStyle = "#00AAAA";
-          ctx2.strokeStyle = "#00FF00";
+          ctx2.fillStyle = cc1;
+          ctx2.strokeStyle = cc2;
+        } else if (ch == "d") {
+          ctx2.fillStyle = dc1;
+          ctx2.strokeStyle = dc2;
+        } else if (ch == "e") {
+          ctx2.fillStyle = ec1;
+          ctx2.strokeStyle = ec2;
         } else {
           ctx2.fillStyle = "rgb(" + (ch*20) + ", 00, 100)";
           ctx2.strokeStyle = "#00FF00";
@@ -503,44 +539,45 @@
       }
       if (key.defining > 0) {
         let lw = 5;
+        let s = "#FF0000";
         switch (key.defining) {
           case 8:
-            ctx.strokeStyle = "#FF0000";
+            ctx.strokeStyle = s;
             ctx.lineWidth = lw;
             ctx.strokeRect(p.x * pSize - pSize, p.y * pSize, pSize, pSize);
             break;
           case 7:
-            ctx.strokeStyle = "#FF0000";
+            ctx.strokeStyle = s;
             ctx.lineWidth = lw;
             ctx.strokeRect(p.x * pSize, p.y * pSize - pSize, pSize, pSize);
             break;
           case 6:
-            ctx.strokeStyle = "#FF0000";
+            ctx.strokeStyle = s;
             ctx.lineWidth = lw;
             ctx.strokeRect(p.x * pSize + pSize, p.y * pSize, pSize, pSize);
             break;
           case 5:
-            ctx.strokeStyle = "#FF0000";
+            ctx.strokeStyle = s;
             ctx.lineWidth = lw;
             ctx.strokeRect(p.x * pSize, p.y * pSize + pSize, pSize, pSize);
             break;
           case 4:
-            ctx2.strokeStyle = "#FF0000";
+            ctx2.strokeStyle = s;
             ctx2.lineWidth = lw;
             ctx2.strokeRect(p.y * pSize - pSize, p.z * pSize, pSize, pSize);
             break;
           case 3:
-            ctx2.strokeStyle = "#FF0000";
+            ctx2.strokeStyle = s;
             ctx2.lineWidth = lw;
             ctx2.strokeRect(p.y * pSize, p.z * pSize - pSize, pSize, pSize);
             break;
           case 2:
-            ctx2.strokeStyle = "#FF0000";
+            ctx2.strokeStyle = s;
             ctx2.lineWidth = lw;
             ctx2.strokeRect(p.y * pSize + pSize, p.z * pSize, pSize, pSize);
             break;
           case 1:
-            ctx2.strokeStyle = "#FF0000";
+            ctx2.strokeStyle = s;
             ctx2.lineWidth = lw;
             ctx2.strokeRect(p.y * pSize, p.z * pSize + pSize, pSize, pSize);
             break;
@@ -581,12 +618,9 @@
         let offy = -10;
         let x = Math.floor((e.x - e.srcElement.offsetLeft + offx) / pSize);
         let y = Math.floor((e.y - e.srcElement.offsetTop + offy) / pSize);
-        // console.log(x + ", " + y);
         if (e.srcElement.id == "canvasTop") {
           p.x = x;
           p.y = y;
-          //ctx.strokeStyle = "#FFFFFF";
-          //ctx.strokeRect(x*pSize, y*pSize, pSize, pSize);
         } else if (e.srcElement.id == "canvasSide1") {
           p.x = x;
           p.z = y;
@@ -810,6 +844,13 @@
         p.item += 1;
         logStr = langStr("\nFree Money: ") + a + logStr;
         chunk[p.z][(p.y*10)+p.x] = ".";
+        doSound(bankSfx); // change me
+      } else if (ch == "e") {
+        // Increase max combo
+        p.maxCombo ++;
+        p.item += 1;
+        chunk[p.z][(p.y*10)+p.x] = ".";
+        logStr = langStr("\nMax combo increased to ") + p.maxCombo + logStr;
         doSound(bankSfx); // change me
       } else if (ch == "b") {
         // Bank
