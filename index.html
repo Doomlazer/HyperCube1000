@@ -49,6 +49,7 @@
     helpStr = "",
     canvasWidth = getWidth(),
     pSize = 40,
+    baseFontSize = 40,
     offset = 10,
     logStr = [],
     soundOn = true,
@@ -142,6 +143,7 @@
     let t1 = [" "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
               " "," ","H","Y","P","E","R"," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
@@ -153,7 +155,8 @@
     let t2 = [" "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," ","C","U","B","E"," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," ","C","U","B","E"," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
@@ -164,7 +167,8 @@
     let t3 = [" "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," ","1","0","0","0"," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," ","1","0","0","0"," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
@@ -307,17 +311,19 @@
     }   
     
     function titleText(c, n) {
-      c.fillStyle = '#002200';
-      c.strokeStyle = "#AAAAAA";
       let x = 0, y = 0;
       for (let j = 0; j < 1000; j ++) {
-        c.fillRect(x * pSize, y * pSize, pSize, pSize);
+        c.fillStyle = '#000044';
+        c.fillRect(x * pSize+2, y * pSize+2, pSize-4, pSize-4);
         if (n == 0) {
-          c.strokeText(t1[j], x * pSize, y * pSize, pSize, pSize)
+          c.fillStyle = '#FFFFFF';
+          c.fillText(t1[j], x * pSize, y * pSize, pSize, pSize);
         } else if (n == 1) {
-          c.strokeText(t2[j], x * pSize, y * pSize, pSize, pSize)
+          c.fillStyle = '#FFFFFF';
+          c.fillText(t2[j], x * pSize, y * pSize, pSize, pSize);
         } else if (n == 2) {
-          c.strokeText(t3[j], x * pSize, y * pSize, pSize, pSize)
+          c.fillStyle = '#FFFFFF';
+          c.fillText(t3[j], x * pSize, y * pSize, pSize, pSize);
         }
         x ++;
         if (x > 9) {
@@ -395,8 +401,6 @@
         }
         if (ch != ".") {
           ctx.fillRect((x%10)*pSize, y*pSize, pSize, pSize);
-        
-          ctx.font = scaleFontSize(40);
           ctx.lineWidth = 2;
           ctx.fillStyle = "#000000";
           //ctx.fillText(ch, (x%10) * pSize + offset, y * pSize + pSize - (offset/2));
@@ -433,7 +437,6 @@
         if (ch != ".") {
           ctx1.fillRect((x%10)*pSize, y*pSize, pSize-1, pSize-1);
         }
-        ctx1.font = scaleFontSize(40);
         ctx1.lineWidth = 2;
         ctx1.strokeText(ch, (x%10) * pSize + (canvasWidth/50), y * pSize + pSize - (canvasWidth/70));
         if (x == (p.z*10)+p.x) {
@@ -467,7 +470,6 @@
         if (ch != ".") {
           ctx2.fillRect((x%10)*pSize, y*pSize, pSize-1, pSize-1);
         }
-        ctx2.font = scaleFontSize(40);
         ctx2.lineWidth = 2;
         ctx2.strokeText(ch, (x%10) * pSize + (canvasWidth/50), y * pSize + pSize - (canvasWidth/70));
         if (x == (p.z*10)+p.y) {
@@ -880,6 +882,9 @@
       canvasWidth = w;
       pSize = w / 10;
       document.getElementById("cords").style.width = (getWidth() - 30) + "px";
+      ctx.font = scaleFontSize(baseFontSize);
+      ctx1.font = scaleFontSize(baseFontSize);
+      ctx2.font = scaleFontSize(baseFontSize);
       draw();
     }
 
