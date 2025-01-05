@@ -6,7 +6,7 @@ Prototype using three 2d canvases to navigte a cube. Requires a window width of 
 
 # Instructions
 
-[Click Here](https://doomlazer.github.io/HyperCube1000/help/helpEN.txt)
+[Click Here](help/helpEN.txt)
 
 # Play in browser
 
