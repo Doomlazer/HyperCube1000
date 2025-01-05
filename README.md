@@ -12,5 +12,7 @@ Prototype using three 2d canvases to navigte a cube.
 # Instructions
 
 [English](help/helpEN.txt)
-[Français](help/helpFR.txt)
+
 [Español](help/helpSP.txt)
+
+[Français](help/helpFR.txt)
