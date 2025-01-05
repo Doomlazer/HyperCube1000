@@ -1,0 +1,18 @@
+
+
+HyperCube1000 Help file English 2025.1.4 (Scroll to read)
+
+Press 0 key to generate a new HyperCube1000 (deletes current game).
+Press 1 key to view help file.
+Press 2 key to toggle audio.
+Press 3 key to toggle control hints.
+Press 5 key to toggle mouseAlwaysOn; "d" mouse bonus tile gives points
+Press 9 key to rebind controls.
+
+The HyperCube is 10 x 10 x 10 cube viewed as Z, X & Y planes. It's navigated with AWSD keys for the Z plane, Arrow keys for the Y plane, and a combination of AWSD and Arrow Keys for the X plane. The mouse can also be used to jump directly to any location.
+
+The cube is generated with a random number of "encounter" tiles labeled 1-9. When entering a tile the player automatically rolls a random number between 0-9. If the roll is equal or greater than the number displayed on the tile, the player doubles their on-hand cash and the tile is removed. Otherwise, the player loses all but $1. Tiles are not removed on loss.
+
+Other tiles: Bank or "b" tiles, which toggle moving money between the bank and the player's on-hand cash. Tiles marked "a" give a random amount of free cash (0-999,999). Tiles marked "c" will let the player keep half their on-hand cash on the next loss.
+
+Choosing consecutive numbers (higher or lower) will raise the Combo Bonus up to the Max Combo. The combo is reset if the encounter is failed, but it is not interrupted by visiting the bank or other bonus tiles.

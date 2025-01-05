@@ -19,7 +19,7 @@
     <canvas id="canvasSide2" width="400" height="400" style="border:2px solid #FFFF00;">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
-    <textarea id="cords" style="color:#FFB000; background-color:rgb(16, 15, 15); width: 800px; height:200px; font-size: 14px;" readonly></textarea>
+    <textarea id="cords" style="color:#FFB000; background-color:rgb(20, 10, 0); width: 800px; height:200px; font-size: 14px;" readonly></textarea>
 
   <script>
     const c = document.getElementById("canvasTop");
@@ -46,14 +46,131 @@
     let  themeMp3 = new Audio("./sounds/theme.mp3");
 
     let chunk = [],
+    helpStr = "",
     canvasWidth = getWidth(),
     pSize = 40,
     offset = 10,
     logStr = [],
     soundOn = true,
+    title = true,
     mouseAlwaysOn = (is_touch_enabled()) ? true : false,
     mouseOn = 0,
+    lang = "EN",
+    key,
     p;
+
+    let dicFR = {
+      "HyperCube1000 | Z: " : "HyperCube1000 | Z: ",
+      ", X: " : ", X: ",
+      ", Y: " : ", Y: ",
+      " | previous: " : " | précédente : ",
+      " | Cash: $" : " | Espèces : $",
+      " | Bank: $" : " | Banque : $",
+      "\nPress \"c\" to show controls" : "\nPress \"c\" to show controls",
+      "\nMouse click disabled. Find d tiles" : "\nMouse click disabled. Find d tiles",
+      "\nConsecutive numbers build combo" : "\nConsecutive numbers build combo",
+      "\nLarger numbers offer greater risk and reward" : "\nLarger numbers offer greater risk and reward",
+      "\nTouch to navigate HyperCube1000" : "\nTouch to navigate HyperCube1000",
+      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)",
+      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguring Key Bindings - press keys to set new controls",
+      "\nsoundOn = false" : "\nsoundOn = false",
+      "\nsoundOn = true" : "\nsoundOn = true",
+      "\nshowControls = false" : "\nshowControls = false",
+      "\nshowControls = true" : "\nshowControls = true",
+      "\nmouseAlwaysOn = false" : "\nmouseAlwaysOn = false",
+      "\nmouseAlwaysOn = true" : "\nmouseAlwaysOn = true",
+      "\nMouse enabled for the next " : "\nMouse enabled for the next ",
+      "\nMouse disabled" : "\nMouse disabled",
+      "\nMouse enabled turns remaining: " : "\nMouse enabled turns remaining: ",
+      "\nKeep 1/2 cash on next failure" : "\nKeep 1/2 cash on next failure",
+      "\nSmall bonus: " : "\nSmall bonus: ",
+      " moves" : " moves",
+      "\nFree Money: " : "\nFree Money: ",
+      "\nBanked: $" : "\nBanked: $",
+      "\nWithdraw: $" : "\nWithdraw: $",
+      "\nRolled: " : "\nRolled: ",
+      " (+combo " : " (+combo ",
+      "), Needed: " : "), Needed: ",
+      ", Lost (1/2): " : ", Lost (1/2): ",
+      ", Lost: " : ", Lost: ",
+      "\nRolled minimum to win (" : "\nRolled minimum to win (",
+      ") - Doubled trunk: " : ") - Doubled trunk: ",
+      ", Won: " : ", Won: ",
+      "\nHyperCube Exausted. Game Over\n" : "\nHyperCube Exausted. Game Over\n"
+    }
+
+    let dicSP = {
+      "HyperCube1000 | Z: " : "HyperCube1000 | Z: ",
+      ", X: " : ", X: ",
+      ", Y: " : ", Y: ",
+      " | previous: " : " | anterior: ",
+      " | Cash: $" : " | Efectivo: $",
+      " | Bank: $" : " | Banco: $",
+      "\nPress \"c\" to show controls" : "\nPulsa \"c\" para mostrar los controles",
+      "\nMouse click disabled. Find d tiles" : "\nMouse click disabled. Find d tiles",
+      "\nConsecutive numbers build combo" : "\nConsecutive numbers build combo",
+      "\nLarger numbers offer greater risk and reward" : "\nLarger numbers offer greater risk and reward",
+      "\nTouch to navigate HyperCube1000" : "\nTouch to navigate HyperCube1000",
+      "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)" : "\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)",
+      "\nReconfiguring Key Bindings - press keys to set new controls" : "\nReconfiguring Key Bindings - press keys to set new controls",
+      "\nsoundOn = false" : "\nsoundOn = false",
+      "\nsoundOn = true" : "\nsoundOn = true",
+      "\nshowControls = false" : "\nshowControls = false",
+      "\nshowControls = true" : "\nshowControls = true",
+      "\nmouseAlwaysOn = false" : "\nmouseAlwaysOn = false",
+      "\nmouseAlwaysOn = true" : "\nmouseAlwaysOn = true",
+      "\nMouse enabled for the next " : "\nMouse enabled for the next ",
+      "\nMouse disabled" : "\nMouse disabled",
+      "\nMouse enabled turns remaining: " : "\nMouse enabled turns remaining: ",
+      "\nKeep 1/2 cash on next failure" : "\nKeep 1/2 cash on next failure",
+      "\nSmall bonus: " : "\nSmall bonus: ",
+      " moves" : " moves",
+      "\nFree Money: " : "\nFree Money: ",
+      "\nBanked: $" : "\nBanked: $",
+      "\nWithdraw: $" : "\nWithdraw: $",
+      "\nRolled: " : "\nRolled: ",
+      " (+combo " : " (+combo ",
+      "), Needed: " : "), Needed: ",
+      ", Lost (1/2): " : ", Lost (1/2): ",
+      ", Lost: " : ", Lost: ",
+      "\nRolled minimum to win (" : "\nRolled minimum to win (",
+      ") - Doubled trunk: " : ") - Doubled trunk: ",
+      ", Won: " : ", Won: ",
+      "\nHyperCube Exausted. Game Over\n" : "\nHyperCube Exausted. Game Over\n"
+    }
+
+    let t1 = [" "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," ","H","Y","P","E","R"," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",];
+
+    let t2 = [" "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," ","C","U","B","E"," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",];
+
+    let t3 = [" "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," ","1","0","0","0"," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",
+              " "," "," "," "," "," "," "," "," "," ",];
     
     class Ego {
       constructor() {
@@ -71,7 +188,7 @@
         this.maxCombo = 5;
         this.left = 0;
         this.bankNum = 0;
-        this.showControls = 100;
+        this.showControls = true;
         this.half = false;
         //stats
         this.lost = 0;
@@ -80,18 +197,58 @@
       }
     }
 
+    class KeyBindings {
+      constructor() {
+        this.defining = 0;
+        this.ll = "a";
+        this.lt = "w";
+        this.lr = "d";
+        this.lb = "s";
+        this.rl = "ArrowLeft";
+        this.rt = "ArrowUp";
+        this.rr = "ArrowRight";
+        this.rb = "ArrowDown";
+      }
+      offset() {
+        if (this.rl == "ArrowLeft" || this.rr == "ArrowRight" ||
+            this.ru == "ArrowUp" || this.rd == "ArrowDown") {
+          return 3;
+        } else {
+          return offset;
+        }
+      }
+      
+      format(k) {
+        // todo: broken in safari
+        (k == "ArrowLeft") ? k="⇦" : k;
+        (k == "ArrowRight") ? k="⇨" : k;
+        (k == "ArrowUp") ? k="⇧" : k;
+        (k == "ArrowDown") ? k="⇩" : k;
+        return k;
+      }
+
+      lower(k) {
+        if (k == "ArrowUp" || k == "ArrowDown" || k == "ArrowLeft" || k == "ArrowRight") {
+          return k;
+        } else {
+          return k.toLowerCase();
+        }
+      }
+    }
+
     initGame()
     //requestAnimationFrame(frame);
 
+    function setLang() {
+      fetch('./help/help'+lang+'.txt')
+      .then(response => response.text())
+      .then((data) => {
+        helpStr = data.split("\n");
+      })
+    }
+
     function initGame() {
-      /*if (window.innerWidth < 1236) {
-        alert("WARNING: Recommend using a browser width of at least 1240px. Current width: "+ window.innerWidth);
-      }*/
-      drawing = new Image();
-      drawing.src = "./images/z.png";
-      drawing.onload = function() {
-        draw();
-      };
+      key = new KeyBindings();
       p = new Ego();
       let f = getRandInt(15);
       for (i = 0; i < 10; i++) {
@@ -132,12 +289,11 @@
         }
         chunk.push(x);
       }
-      logStr = "\nSpace key for bank withdrawl" + logStr;
-      logStr = "\nConsecutive numbers build combo" + logStr;
-      logStr = "\nLarger numbers offer greater risk and reward" + logStr;
-      logStr = "\nClick or use AWSD & Arrow Keys to navigate HyperCube1000" + logStr;
-      doResize();
-      draw();
+      drawing = new Image();
+      drawing.src = "./images/z.png";
+      drawing.onload = function() {
+        doResize();
+      };
     }
 
     function getRandInt(max) {
@@ -148,15 +304,46 @@
     function frame(timestamp) {
       //draw();
       requestAnimationFrame(frame);
-    }         
-
+    }   
+    
+    function titleText(c, n) {
+      c.fillStyle = '#002200';
+      c.strokeStyle = "#AAAAAA";
+      let x = 0, y = 0;
+      for (let j = 0; j < 1000; j ++) {
+        c.fillRect(x * pSize, y * pSize, pSize, pSize);
+        if (n == 0) {
+          c.strokeText(t1[j], x * pSize, y * pSize, pSize, pSize)
+        } else if (n == 1) {
+          c.strokeText(t2[j], x * pSize, y * pSize, pSize, pSize)
+        } else if (n == 2) {
+          c.strokeText(t3[j], x * pSize, y * pSize, pSize, pSize)
+        }
+        x ++;
+        if (x > 9) {
+          x = 0;
+          y ++;
+        }
+      }
+    }
+    
+    function drawTitle() {
+      if (!is_touch_enabled()) {
+        logStr = [];
+        logStr = "\nPulse 3 para español" + logStr;
+        logStr = "\nAppuyer sur 2 pour le français" + logStr;
+        logStr = "Press 1 for english" + logStr;
+      } else {
+        logStr = "\nTouch to start" + logStr;
+        lang = "EN";
+      }
+      document.getElementById("cords").innerHTML = logStr;
+      titleText(ctx, 0);
+      titleText(ctx1, 1);
+      titleText(ctx2, 2);
+    }
+    
     function draw() {
-      document.getElementById("cords").innerHTML = "Z: " + p.z + ", X: " + p.x + ", Y: " + p.y
-       + ", audio(\"x\"):"+soundOn
-       + ", prevNum: " + p.prevNum
-       + ", Cash: $" + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0})
-       + ", Bank: $" + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) 
-       + logStr;
       ctx.fillStyle = '#000000';
       ctx.strokeStyle = "#00FF00";
       ctx.fillRect(0, 0, c.width, c.height);
@@ -169,6 +356,19 @@
       ctx.drawImage(drawing, 0 - (pSize * p.z / 2), 0 - (pSize * p.z / 2), 400 + pSize * p.z, 400 + pSize * p.z);
       ctx1.drawImage(drawing, 0 - (pSize * p.y / 2), 0 - (pSize * p.y / 2), 400 + pSize * p.y, 400 + pSize * p.y);
       ctx2.drawImage(drawing, 0 - (pSize * p.x / 2), 0 - (pSize * p.x / 2), 400 + pSize * p.x, 400 + pSize * p.x);
+
+      if (title) {
+        drawTitle();
+        return;
+      } else {
+        document.getElementById("cords").innerHTML = langStr("HyperCube1000 | Z: ") + p.z + 
+        langStr(", X: ") + p.x + 
+        langStr(", Y: ") + p.y +
+        langStr(" | previous: ") + p.prevNum +
+        langStr(" | Cash: $") + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0}) +
+        langStr(" | Bank: $") + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) + 
+        logStr;
+      }
 
       let y = 0;
       for (x = 0; x < 100; x++) {
@@ -281,27 +481,80 @@
           ctx2.strokeRect((x%10)*pSize, y*pSize, pSize, pSize);
         }
       }
-      if (p.showControls > 0) {
-        ctx.strokeStyle = "#AAAAAA";
-        ctx.strokeText("a", p.x * pSize - pSize + offset, p.y * pSize + pSize - offset);
-        ctx.strokeText("d", p.x * pSize + pSize + offset, p.y * pSize + pSize - offset);
-        ctx.strokeText("w", p.x * pSize + offset, p.y * pSize - offset);
-        ctx.strokeText("s", p.x * pSize + offset, p.y * pSize + (pSize * 2) - offset);
-        ctx1.strokeStyle = "#AAAAAA";
-        ctx1.strokeText("a", p.x * pSize - pSize + offset, p.z * pSize + pSize - offset);
-        ctx1.strokeText("d", p.x * pSize + pSize + offset, p.z * pSize + pSize - offset);
-        ctx1.strokeText("^", p.x * pSize + offset, p.z * pSize - offset);
-        ctx1.strokeText("V", p.x * pSize + offset, p.z * pSize + (pSize * 2) - offset);
-        ctx2.strokeStyle = "#AAAAAA";
-        ctx2.strokeText("<", p.y * pSize - pSize + offset, p.z * pSize + pSize - offset);
-        ctx2.strokeText(">", p.y * pSize + pSize + offset, p.z * pSize + pSize - offset);
-        ctx2.strokeText("^", p.y * pSize + offset, p.z * pSize - offset);
-        ctx2.strokeText("V", p.y * pSize + offset, p.z * pSize + (pSize * 2) - offset);
-        p.showControls --;
+      if (p.showControls) {
+        let c = "#FFFFFF";
+        ctx.fillStyle = c;
+        ctx.fillText(key.format(key.ll), p.x * pSize - pSize + key.offset(key.ll), p.y * pSize + pSize - key.offset(key.ll));
+        ctx.fillText(key.format(key.lr), p.x * pSize + pSize + key.offset(key.lr), p.y * pSize + pSize - key.offset(key.lr));
+        ctx.fillText(key.format(key.lt), p.x * pSize + key.offset(key.lt), p.y * pSize - key.offset(key.lt));
+        ctx.fillText(key.format(key.lb), p.x * pSize + key.offset(key.lb), p.y * pSize + (pSize * 2) - key.offset(key.lb));
+        ctx1.fillStyle = c;
+        ctx1.fillText(key.format(key.ll), p.x * pSize - pSize + key.offset(key.ll), p.z * pSize + pSize - key.offset(key.ll));
+        ctx1.fillText(key.format(key.lr), p.x * pSize + pSize + key.offset(key.lr), p.z * pSize + pSize - key.offset(key.lr));
+        ctx1.fillText(key.format(key.rt), p.x * pSize + key.offset(key.rt), p.z * pSize - key.offset(key.rt));
+        ctx1.fillText(key.format(key.rb), p.x * pSize + key.offset(key.rb), p.z * pSize + (pSize * 2) - key.offset(key.rb));
+        ctx2.fillStyle = c;
+        ctx2.fillText(key.format(key.rl), p.y * pSize - pSize + key.offset(key.rl), p.z * pSize + pSize - key.offset(key.rl));
+        ctx2.fillText(key.format(key.rr), p.y * pSize + pSize + key.offset(key.rr), p.z * pSize + pSize - key.offset(key.rr));
+        ctx2.fillText(key.format(key.rt), p.y * pSize + key.offset(key.rt), p.z * pSize - key.offset(key.rt));
+        ctx2.fillText(key.format(key.rb), p.y * pSize + key.offset(key.rb), p.z * pSize + (pSize * 2) - key.offset(key.rb));
+      }
+      if (key.defining > 0) {
+        let lw = 5;
+        switch (key.defining) {
+          case 8:
+            ctx.strokeStyle = "#FF0000";
+            ctx.lineWidth = lw;
+            ctx.strokeRect(p.x * pSize - pSize, p.y * pSize, pSize, pSize);
+            break;
+          case 7:
+            ctx.strokeStyle = "#FF0000";
+            ctx.lineWidth = lw;
+            ctx.strokeRect(p.x * pSize, p.y * pSize - pSize, pSize, pSize);
+            break;
+          case 6:
+            ctx.strokeStyle = "#FF0000";
+            ctx.lineWidth = lw;
+            ctx.strokeRect(p.x * pSize + pSize, p.y * pSize, pSize, pSize);
+            break;
+          case 5:
+            ctx.strokeStyle = "#FF0000";
+            ctx.lineWidth = lw;
+            ctx.strokeRect(p.x * pSize, p.y * pSize + pSize, pSize, pSize);
+            break;
+          case 4:
+            ctx2.strokeStyle = "#FF0000";
+            ctx2.lineWidth = lw;
+            ctx2.strokeRect(p.y * pSize - pSize, p.z * pSize, pSize, pSize);
+            break;
+          case 3:
+            ctx2.strokeStyle = "#FF0000";
+            ctx2.lineWidth = lw;
+            ctx2.strokeRect(p.y * pSize, p.z * pSize - pSize, pSize, pSize);
+            break;
+          case 2:
+            ctx2.strokeStyle = "#FF0000";
+            ctx2.lineWidth = lw;
+            ctx2.strokeRect(p.y * pSize + pSize, p.z * pSize, pSize, pSize);
+            break;
+          case 1:
+            ctx2.strokeStyle = "#FF0000";
+            ctx2.lineWidth = lw;
+            ctx2.strokeRect(p.y * pSize, p.z * pSize + pSize, pSize, pSize);
+            break;
+          default:
+        }
       }
     }
 
     function doClick(e) {
+      if (title) {
+        title = false;
+        console.log(e.srcElement)
+        draw();
+        return;
+      }
+      if (key.defining > 0) {return;}
       if (mouseOn > 0 || mouseAlwaysOn) {
         doSound(themeMp3);
         // the srcElement I'm using doen't give the correct canvas offset, 
@@ -323,80 +576,168 @@
           p.y = x;
           p.z = y;
         }
-        if (p.showControls > 0) {
-          p.showControls = 0;
-          logStr = "\nPress \"c\" to show controls" + logStr;
+        if (p.showControls) {
+          p.showControls = false;
+          logStr = langStr("\nPress \"c\" to show controls") + logStr;
         }
         doLogic(e);
       } else {
-        logStr = "\nMouse click disabled. Find d tiles" + logStr;
+        logStr = langStr("\nMouse click disabled. Find d tiles") + logStr;
         draw();
       }
     }
 
     function doKeyDown(e) {
-      doSound(themeMp3);
-      if (e.key.toLowerCase() == "z") {
-        if (mouseAlwaysOn) {
-          mouseAlwaysOn = false;
+      if (title) {
+        if (e.key == "1") {
+          lang = "EN";
+        } else if (e.key == "2") {
+          lang = "FR";
+        } else if (e.key == "3") {
+          lang = "SP";
         } else {
-          mouseAlwaysOn = true;
+          lang = "EN";
         }
+        setLang();
+        title = false;
+        if (!is_touch_enabled()) {
+          
+        }
+        logStr = "";
+        logStr = langStr("\nConsecutive numbers build combo") + logStr;
+        logStr = langStr("\nLarger numbers offer greater risk and reward") + logStr;
+        if (is_touch_enabled()) {
+          logStr = langStr("\nTouch to navigate HyperCube1000") + logStr;
+        } else {
+          logStr = langStr("\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)") + logStr;
+        }
+        draw();
+        return;
       }
-      if (e.key.toLowerCase() == "x") {
+      doSound(themeMp3);
+      let k = key.lower(e.key);
+      if (k == "9") {
+        logStr = langStr("\nReconfiguring Key Bindings - press keys to set new controls") + logStr;
+        p.showControls = true;
+        key.defining = 8;
+        key.ll = " ";
+        key.lt = " ";
+        key.lr = " ";
+        key.lb = " ";
+        key.rl = " ";
+        key.rt = " ";
+        key.rr = " ";
+        key.rb = " ";
+        draw();
+        return;
+      }
+      if (key.defining > 0) {
+        key.defining --;
+        switch (key.defining) {
+          case 7:
+            key.ll = k;
+            break;
+          case 6:
+            key.lt = k;
+            break;
+          case 5:
+            key.lr = k;
+            break;
+          case 4:
+            key.lb = k;
+            break;
+          case 3:
+            key.rl = k;
+            break;
+          case 2:
+            key.rt = k;
+            break;
+          case 1:
+            key.rr = k;
+            break;
+          case 0:
+            key.rb = k;
+            break;
+          default:
+        }
+        draw();
+        return;
+      }
+      if (k == "0") {
+        window.location.reload();
+      }
+      if (k == "1") {
+        for (i in helpStr) {
+          logStr = "\n" + helpStr[helpStr.length - i - 1] + logStr;
+        }
+        draw();
+        return;
+      }
+      if (k == "2") {
         if (soundOn) {
           themeMp3.pause();
           winSfx.pause();
           loseSfx.pause();
           bankSfx.pause();
           soundOn = false;
+          logStr = langStr("\nsoundOn = false") + logStr;
         } else {
           soundOn = true;
+          logStr = langStr("\nsoundOn = true") + logStr;
         }
       }
-      if (e.key.toLowerCase() == "c") {
-        if (p.showControls > 0) {
-          p.showControls = 0
+      if (k == "3") {
+        if (p.showControls) {
+          p.showControls = false;
+          logStr = langStr("\nshowControls = false") + logStr;
         } else {
-          p.showControls = 900000;
+          p.showControls = true;
+          logStr = langStr("\nshowControls = true") + logStr;
         }
       }
-      if (e.key.toLowerCase() == "w" || e.key == "ArrowLeft") {
+      if (k == key.lt || k == key.rl) {
         p.y --;
         if (p.y < 0) {
           p.y = 0;
         }
       }
-      if (e.key.toLowerCase() == "s" || e.key == "ArrowRight") {
+      if (k == key.lb || k == key.rr) {
         p.y ++;
         if (p.y > 9) {
           p.y = 9;
         }
       }
-      if (e.key.toLowerCase() == "a") {
+      if (k == key.ll) {
         p.x --;
         if (p.x < 0) {
           p.x = 0;
         }
       }
-      if (e.key.toLowerCase() == "d") {
+      if (k == key.lr) {
         p.x ++;
         if (p.x > 9) {
           p.x = 9;
         }
       }
-      // up
-      if (e.key == "ArrowDown") {
+      if (k== key.rb) {
         p.z ++;
         if (p.z > 9) {
           p.z = 9;
         }
       }
-      // down
-      if (e.key == "ArrowUp") {
+      if (k == key.rt) {
         p.z --;
         if (p.z < 0) {
           p.z = 0;
+        }
+      }
+      if (k == "5") {
+        if (mouseAlwaysOn) {
+          mouseAlwaysOn = false;
+          logStr = langStr("\nmouseAlwaysOn = false") + logStr;
+        } else {
+          mouseAlwaysOn = true;
+          logStr = langStr("\nmouseAlwaysOn = true") + logStr;
         }
       }
       doLogic(e);
@@ -407,9 +748,9 @@
         mouseOn --;
         if (mouseOn < 6 || mouseOn % 10 == 0) {
           if (mouseOn == 0) {
-            logStr = "\nMouse disabled" + logStr;
+            logStr = langStr("\nMouse disabled") + logStr;
           } else {
-            logStr = "\nMouse enabled turns remaining: " + mouseOn + logStr;
+            logStr = langStr("\nMouse enabled turns remaining: ") + mouseOn + logStr;
           }
         }
       }
@@ -421,7 +762,7 @@
         // Keep half on loss
         p.half = true;
         p.item += 1;
-        logStr = "\nKeep 1/2 cash on next failure" + logStr;
+        logStr = langStr("\nKeep 1/2 cash on next failure") + logStr;
         chunk[p.z][(p.y*10)+p.x] = ".";
         doSound(loseSfx); // change me
       } else if (ch == "d") {
@@ -429,11 +770,11 @@
           let a = getRandInt(1000);
           p.trunk += a;
           p.item += 1;
-          logStr = "\nSmall bonus: " + a + logStr;
+          logStr = langStr("\nSmall bonus: ") + a + logStr;
         } else {
           // Temp Enable Mouse
           mouseOn += getRandInt(100) + 1;
-          logStr = "\nMouse enabled for the next " + (mouseOn-1) + " moves" + logStr;
+          logStr = langStr("\nMouse enabled for the next ") + (mouseOn-1) + langStr(" moves") + logStr;
         }
         p.item += 1;
         chunk[p.z][(p.y*10)+p.x] = ".";
@@ -443,17 +784,17 @@
         let a = getRandInt(1000000);
         p.trunk += a;
         p.item += 1;
-        logStr = "\nFree Money: " + a + logStr;
+        logStr = langStr("\nFree Money: ") + a + logStr;
         chunk[p.z][(p.y*10)+p.x] = ".";
         doSound(bankSfx); // change me
       } else if (ch == "b") {
         // Bank
         if (p.trunk > 1) {
-          logStr = "\nBanked: " + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          logStr = langStr("\nBanked: $") + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
           p.bank += p.trunk - 1;
           p.trunk = 1;
         } else {
-          logStr = "\nWithdraw: " + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          logStr = langStr("\nWithdraw: $") + p.bank.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
           p.trunk += p.bank ;
           p.bank = 0;
         }
@@ -464,11 +805,11 @@
         if (r + p.combo < ch) {
           p.lost += p.trunk-1;
           if (p.half && p.trunk > 1) {
-            logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Lost (1/2): " + (p.trunk/2).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+            logStr = langStr("\nRolled: ") + r + langStr(" (+combo ") + p.combo + langStr("), Needed: ") + ch + langStr(", Lost (1/2): ") + (p.trunk/2).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
             p.trunk = p.trunk / 2;
             p.half = false;
           } else {
-            logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Lost: " + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+            logStr = langStr("\nRolled: ") + r + langStr(" (+combo ") + p.combo + langStr("), Needed: ") + ch + langStr(", Lost: ") + (p.trunk-1).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
             p.trunk = 1;
           }
           p.combo = 0;
@@ -477,10 +818,10 @@
         } else {
           if (r + p.combo == ch) {
             p.trunk += p.trunk;
-            logStr = "\nRolled minimum to win (" + ch + ") - Doubled trunk: " + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+            logStr = langStr("\nRolled minimum to win (") + ch + langStr(") - Doubled trunk: ") + p.trunk.toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
           }
           p.won += p.trunk * ch;
-          logStr = "\nRolled: " + r + " (+combo " + p.combo + "), Needed: " + ch + ", Won: " + (p.trunk*ch).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
+          logStr = langStr("\nRolled: ") + r + langStr(" (+combo ") + p.combo + langStr("), Needed: ") + ch + langStr(", Won: ") + (p.trunk*ch).toLocaleString(undefined, {minimumFractionDigits: 0}) + logStr;
           p.trunk += p.trunk * ch;
           t = 2; // remove
           doSound(winSfx);
@@ -518,7 +859,7 @@
         p.left--;
       }
       if (p.left == 0) {
-        logStr = "\nHyperCube Exausted. Game Over\n" + logStr;
+        logStr = langStr("\nHyperCube Exausted. Game Over\n") + logStr;
         //p = 0;
       }
     }
@@ -575,6 +916,18 @@
     function doSound(a) {
       if (soundOn) {
         a.play();
+      }
+    }
+
+    function langStr(s) {
+      if (lang == "EN") {
+        return s;
+      } else if (lang == "FR") {
+        return dicFR[s];
+      } else if (lang == "SP") {
+        return dicSP[s];
+      } else {
+        return "lang " + lang + " not known";
       }
     }
   </script>

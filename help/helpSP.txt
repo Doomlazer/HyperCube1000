@@ -1,0 +1,18 @@
+
+
+Archivo de Ayuda HyperCube1000 Español 2025.1.4 (Desplácese para leer)
+
+Presione la tecla 0 para generar un nuevo HyperCube1000 (borra el juego actual).
+Pulse la tecla 1 para ver el archivo de ayuda.
+Presione la tecla 2 para activar el audio.
+Presione la tecla 3 para activar las pistas de control.
+Tecla 5 para activar mouseAlwaysOn; la «d» del mouse da puntos.
+Tecla 9 para volver a vincular los controles.
+
+El HyperCube es un cubo de 10 x 10 x 10 visto como planos Z, X & Y. Se navega con teclas AWSD para el plano Z, teclas Flecha para el plano Y, y una combinación de teclas AWSD y Flecha para el plano X. También se puede utilizar el ratón para saltar directamente a cualquier posición.
+
+El cubo se genera con un número aleatorio de losetas de «encuentro» etiquetadas del 1 al 9. Al entrar en una baldosa, el jugador tira automáticamente un número aleatorio entre 0-9. Si la tirada es igual o mayor que 0-9, el cubo se cierra. Si la tirada es igual o mayor que el número que aparece en la ficha, el jugador dobla el dinero que tiene y retira la ficha. En caso contrario, el jugador pierde todo menos 1 $. Las fichas no se retiran en caso de pérdida.
+
+Otras fichas: Fichas de banco o «b», que mueven el dinero entre el banco y el efectivo disponible del jugador. Las fichas marcadas con «a» dan una cantidad aleatoria de dinero gratis (0-999,999). Las casillas marcadas con una «c» permiten al jugador conservar la mitad del dinero disponible en la siguiente pérdida.
+
+Elegir números consecutivos (más altos o más bajos) aumentará la bonificación de combo hasta el combo máximo. El combo se reinicia si se falla el encuentro, pero no se interrumpe al visitar el banco u otras fichas de bonificación.

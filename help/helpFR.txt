@@ -1,0 +1,20 @@
+
+
+HyperCube1000 Help file Français 2025.1.4 (défilement)
+
+Appuyer sur la touche 0 pour générer un nouvel HyperCube1000 (efface la partie en cours).
+Appuyer sur la touche 1 pour afficher le fichier d'aide.
+Appuyer sur la touche 2 pour activer l'audio.
+Appuyer sur la touche 3 pour basculer les indices de contrôle.
+Appuyer sur la touche 5 pour activer la fonction mouseAlwaysOn ; la tuile bonus « d » de la souris donne des points.
+Appuyer sur la touche 9 pour rétablir les commandes.
+
+L'HyperCube est un cube de 10 x 10 x 10 vu dans les plans Z, X et Y. Il est navigué avec l'AWS. On y navigue avec les touches AWSD pour le plan Z, les touches fléchées pour le plan Y, et une combinaison de touches AWSD et fléchées pour le plan X. La souris peut également être utilisée pour sauter directement à n'importe quel endroit.
+
+Le cube est généré avec un nombre aléatoire de tuiles de « rencontre » étiquetées de 1 à 9. En entrant dans une tuile, le joueur lance automatiquement un nombre aléatoire entre 0 et 9. Si le résultat est supérieur ou égal au nombre affiché sur la tuile, le joueur double son argent et la tuile est retirée. Dans le cas contraire, le joueur perd tout sauf 1 $. Les tuiles ne sont pas retirées en cas de perte.
+
+Autres tuiles : Les tuiles Banque ou « b », qui permettent de déplacer l'argent entre la banque et l'argent en main du joueur. Les tuiles marquées « a » donnent un montant aléatoire d'argent gratuit (0-999 999). Les tuiles marquées « c » permettent au joueur de conserver la moitié de son argent disponible lors de la prochaine perte.
+
+Le choix de nombres consécutifs (supérieurs ou inférieurs) augmente le bonus de combo jusqu'au combo maximum. Le combo est réinitialisé si la rencontre échoue, mais il n'est pas interrompu par la visite de la banque ou d'autres tuiles de bonus.
+
+Traduit avec DeepL.com (version gratuite)
