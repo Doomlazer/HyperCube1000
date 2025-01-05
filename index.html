@@ -294,6 +294,10 @@
       }
       // +1 to max combo
       chunk[getRandInt(10)][getRandInt(100)] = "e";
+      // and maybe add one more
+      if (getRandInt(2) == 0) {
+        chunk[getRandInt(10)][getRandInt(100)] = "e";
+      }
       // background
       drawing = new Image();
       drawing.src = "./images/b0.png";
