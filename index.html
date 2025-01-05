@@ -144,11 +144,11 @@
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," ","H","Y","P","E","R"," "," "," ",
+              " "," "," ","H","Y","P","E","R"," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," "," "," "," "," "," "," "," "," ",
+              " "," ","E","N","G","L","I","S","H"," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",];
 
@@ -160,7 +160,7 @@
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," "," "," "," "," "," "," "," "," ",
+              " ","F","R","A","N","Ç","A","I","S"," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",];
 
@@ -172,7 +172,7 @@
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",
-              " "," "," "," "," "," "," "," "," "," ",
+              " "," ","E","S","P","A","Ñ","O","L"," ",
               " "," "," "," "," "," "," "," "," "," ",
               " "," "," "," "," "," "," "," "," "," ",];
     
@@ -336,11 +336,13 @@
     function drawTitle() {
       if (!is_touch_enabled()) {
         logStr = [];
-        logStr = "\nPulse 3 para español" + logStr;
-        logStr = "\nAppuyer sur 2 pour le français" + logStr;
-        logStr = "Press 1 for english" + logStr;
+        logStr = "\n  Pulse 3 para español" + logStr;
+        logStr = "\n  Appuyer sur 2 pour le français" + logStr;
+        logStr = "\n\n  Press 1 for english" + logStr;
+        logStr = "****||=+ HypeCube1000 +=||****" + logStr;
       } else {
         logStr = "\nTouch to start" + logStr;
+        logStr = "HypeCube1000" + logStr;
         lang = "EN";
       }
       document.getElementById("cords").innerHTML = logStr;
@@ -550,10 +552,28 @@
     }
 
     function doClick(e) {
+      logStr = "";
+      logStr = langStr("\nConsecutive numbers build combo") + logStr;
+      logStr = langStr("\nLarger numbers offer greater risk and reward") + logStr;
+      if (is_touch_enabled()) {
+        logStr = langStr("\nTouch to navigate HyperCube1000") + logStr;
+      } else {
+        logStr = langStr("\nUse AWSD & Arrow Keys to navigate HyperCube1000 (9 to rebind)") + logStr;
+      }
       if (title) {
-        title = false;
-        console.log(e.srcElement)
-        draw();
+        if (e.srcElement.id == "canvasTop") {
+          title = false;
+          lang = "EN"
+          draw();
+        } else if (e.srcElement.id == "canvasSide1") {
+          title = false;
+          lang = "FR"
+          draw();
+        } else if (e.srcElement.id == "canvasSide2") {
+          title = false;
+          lang = "SP"
+          draw();
+        }
         return;
       }
       if (key.defining > 0) {return;}
